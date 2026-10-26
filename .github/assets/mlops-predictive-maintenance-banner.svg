@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Predictive maintenance MLOps</title>
+  <desc id="desc">Degradation curves of several machines falling toward a failure threshold, with the remaining useful life measured from the current cycle, over a navy to blue gradient.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1f4d"/>
+      <stop offset="1" stop-color="#2456c8"/>
+    </linearGradient>
+    <linearGradient id="curve" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9cc0ff"/>
+      <stop offset="0.7" stop-color="#cfe0ff"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5b8def" stop-opacity="0"/>
+      <stop offset="1" stop-color="#5b8def" stop-opacity="0.35"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <rect width="1200" height="300" fill="url(#grid)"/>
+
+  <!-- chart frame -->
+  <g stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.5" fill="none">
+    <path d="M690 48 V246 H1150"/>
+  </g>
+
+  <!-- fleet: other units degrading at their own pace -->
+  <g fill="none" stroke="#9cc0ff" stroke-width="2" stroke-linecap="round">
+    <path d="M690 70 C 790 72, 880 92, 960 226" stroke-opacity="0.28"/>
+    <path d="M690 82 C 820 84, 950 104, 1040 226" stroke-opacity="0.38"/>
+    <path d="M690 64 C 860 66, 1030 96, 1135 226" stroke-opacity="0.22"/>
+  </g>
+
+  <!-- uncertainty band of the predicted path -->
+  <path d="M960 112 C 1010 128, 1050 170, 1080 226 L 1130 226 C 1090 160, 1040 116, 960 104 Z" fill="url(#band)"/>
+
+  <!-- observed history of the unit in focus -->
+  <path d="M690 76 C 790 77, 880 86, 960 108" fill="none" stroke="url(#curve)" stroke-width="3.5" stroke-linecap="round"/>
+  <g fill="#ffffff">
+    <circle cx="720" cy="78" r="2.6" opacity="0.55"/>
+    <circle cx="752" cy="75" r="2.6" opacity="0.6"/>
+    <circle cx="786" cy="80" r="2.6" opacity="0.65"/>
+    <circle cx="818" cy="79" r="2.6" opacity="0.7"/>
+    <circle cx="850" cy="84" r="2.6" opacity="0.75"/>
+    <circle cx="882" cy="85" r="2.6" opacity="0.8"/>
+    <circle cx="912" cy="93" r="2.6" opacity="0.85"/>
+    <circle cx="938" cy="98" r="2.6" opacity="0.9"/>
+  </g>
+
+  <!-- predicted path to failure -->
+  <path d="M960 108 C 1010 124, 1060 166, 1104 226" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="7 7" stroke-linecap="round"/>
+  <circle cx="960" cy="108" r="7" fill="#ffffff"/>
+  <circle cx="960" cy="108" r="13" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="2"/>
+
+  <!-- failure threshold -->
+  <path d="M690 226 H1150" stroke="#ffb4a8" stroke-opacity="0.85" stroke-width="2" stroke-dasharray="3 6"/>
+  <circle cx="1104" cy="226" r="5" fill="#ffb4a8"/>
+
+  <!-- now marker and remaining useful life bracket -->
+  <path d="M960 122 V262" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="2 5"/>
+  <g stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M960 270 H1104"/>
+    <path d="M960 264 V276 M1104 264 V276"/>
+  </g>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#ffffff">
+    <text x="1032" y="292" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="2" fill-opacity="0.9">RUL</text>
+    <text x="700" y="216" font-size="12" letter-spacing="1.5" fill="#ffb4a8">FAILURE THRESHOLD</text>
+    <text x="960" y="40" font-size="12" text-anchor="middle" letter-spacing="1.5" fill-opacity="0.75">NOW</text>
+
+    <text x="72" y="112" font-size="40" font-weight="700" letter-spacing="-0.5">Predictive Maintenance MLOps</text>
+    <text x="72" y="154" font-size="22" font-weight="400" fill-opacity="0.88">Remaining useful life, from notebook to governed production</text>
+
+    <g font-size="14" font-weight="600" letter-spacing="0.5">
+      <rect x="72" y="190" width="92" height="30" rx="15" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.3"/>
+      <text x="118" y="210" text-anchor="middle">MLflow</text>
+      <rect x="174" y="190" width="136" height="30" rx="15" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.3"/>
+      <text x="242" y="210" text-anchor="middle">Unity Catalog</text>
+      <rect x="320" y="190" width="104" height="30" rx="15" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.3"/>
+      <text x="372" y="210" text-anchor="middle">Azure ML</text>
+      <rect x="434" y="190" width="116" height="30" rx="15" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.3"/>
+      <text x="492" y="210" text-anchor="middle">Databricks</text>
+    </g>
+  </g>
+</svg>
