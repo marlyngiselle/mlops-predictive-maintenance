@@ -1,0 +1,44 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# MLflow local backend and run artifacts
+mlruns/
+mlartifacts/
+mlflow.db
+*.db
+
+# Local demo output
+.local/
+
+# Terraform
+**/.terraform/*
+.terraform.lock.hcl.bak
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+*.tfvars
+!*.tfvars.example
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Databricks bundles
+.databricks/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
