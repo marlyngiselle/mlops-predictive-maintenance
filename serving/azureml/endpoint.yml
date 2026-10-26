@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineEndpoint.schema.json
+# az ml online-endpoint create --file serving/azureml/endpoint.yml
+name: pdm-rul
+description: Remaining useful life for rotating equipment. Champion model from the registry.
+auth_mode: aml_token
+# Disabled when the workspace runs with private networking (infra/terraform/azureml,
+# enable_private_networking = true). Callers then reach the scoring URI through the
+# workspace private endpoint.
+public_network_access: disabled
+identity:
+  type: system_assigned
+tags:
+  workload: predictive-maintenance
+  data-classification: internal

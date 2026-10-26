@@ -1,0 +1,66 @@
+# Databricks Asset Bundle for the RUL lifecycle.
+#   databricks bundle validate --target dev
+#   databricks bundle deploy   --target dev
+#   databricks bundle run pdm_training --target dev
+bundle:
+  name: pdm-rul
+
+include:
+  - resources/*.yml
+
+artifacts:
+  pdm_wheel:
+    type: whl
+    path: ..
+    build: uv build --wheel
+    files:
+      - source: dist/*.whl
+
+variables:
+  catalog:
+    description: Unity Catalog catalog that holds the schema, the volume and the model.
+  schema:
+    description: Schema for the RUL tables, the data volume and the registered model.
+    default: pdm
+  model_name:
+    description: Three level Unity Catalog model name.
+    default: ${var.catalog}.${var.schema}.rul_model
+  data_root:
+    description: Volume path the jobs read from and write to.
+    default: /Volumes/${var.catalog}/${var.schema}/data
+  max_rmse:
+    description: Absolute RMSE ceiling a challenger must meet (cycles).
+    default: "30"
+  min_improvement:
+    description: Relative RMSE improvement a challenger needs over the champion.
+    default: "0.02"
+  maintenance_threshold:
+    description: Units predicted at or below this many cycles are flagged for maintenance.
+    default: "30"
+  alert_email:
+    description: Who hears about failed runs and drift alerts.
+    default: ml-platform-alerts@example.com
+  service_principal:
+    description: Application ID of the service principal that runs prod jobs and owns the prod model.
+    default: ""
+
+targets:
+  dev:
+    mode: development
+    default: true
+    variables:
+      catalog: ml_dev
+
+  prod:
+    mode: production
+    variables:
+      catalog: ml_prod
+    workspace:
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      service_principal_name: ${var.service_principal}
+    permissions:
+      - group_name: ml-engineers
+        level: CAN_VIEW
+      - group_name: ml-platform-admins
+        level: CAN_MANAGE

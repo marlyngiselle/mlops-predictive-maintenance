@@ -1,0 +1,14 @@
+# Inference environment. The pins mirror requirements.txt inside the logged MLflow model:
+# scikit-learn in particular must match the version the estimator was trained with.
+name: pdm-rul-inference
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - azureml-inference-server-http==1.5.1
+      - mlflow-skinny==3.17.2
+      - numpy==2.5.4
+      - pandas==3.1.0
+      - scikit-learn==1.9.1

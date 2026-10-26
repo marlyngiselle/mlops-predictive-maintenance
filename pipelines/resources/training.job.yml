@@ -1,0 +1,84 @@
+# Feature build, training and the champion/challenger gate, as one job with three tasks.
+# The gate task is the only code path that moves the "champion" alias.
+resources:
+  jobs:
+    pdm_training:
+      name: pdm-training-${bundle.target}
+      description: Build features, train a challenger, register it and promote it only if it beats the champion.
+      max_concurrent_runs: 1
+      timeout_seconds: 7200
+      schedule:
+        quartz_cron_expression: "0 0 4 ? * MON"
+        timezone_id: UTC
+        pause_status: UNPAUSED
+      email_notifications:
+        on_failure:
+          - ${var.alert_email}
+      tags:
+        workload: predictive-maintenance
+        stage: training
+      environments:
+        - environment_key: pdm
+          spec:
+            environment_version: "3"
+            dependencies:
+              - ../../dist/*.whl
+      tasks:
+        - task_key: feature_build
+          environment_key: pdm
+          python_wheel_task:
+            package_name: pdm_rul
+            entry_point: pdm
+            parameters: ["features", "--data-dir", "${var.data_root}"]
+
+        - task_key: train
+          depends_on:
+            - task_key: feature_build
+          environment_key: pdm
+          python_wheel_task:
+            package_name: pdm_rul
+            entry_point: pdm
+            parameters:
+              - --tracking-uri
+              - databricks
+              - --registry-uri
+              - databricks-uc
+              - --experiment
+              - /Shared/pdm-rul-${bundle.target}
+              - --model-name
+              - ${var.model_name}
+              - train
+              - --data-dir
+              - ${var.data_root}
+              - --handoff
+              - ${var.data_root}/handoff/{{job.run_id}}.json
+              - --model-type
+              - hgb
+              - --run-name
+              - scheduled-{{job.run_id}}
+
+        - task_key: evaluate_and_register
+          depends_on:
+            - task_key: train
+          environment_key: pdm
+          python_wheel_task:
+            package_name: pdm_rul
+            entry_point: pdm
+            parameters:
+              - --tracking-uri
+              - databricks
+              - --registry-uri
+              - databricks-uc
+              - --experiment
+              - /Shared/pdm-rul-${bundle.target}
+              - --model-name
+              - ${var.model_name}
+              - evaluate-register
+              - --data-dir
+              - ${var.data_root}
+              - --handoff
+              - ${var.data_root}/handoff/{{job.run_id}}.json
+              - --max-rmse
+              - ${var.max_rmse}
+              - --min-improvement
+              - ${var.min_improvement}

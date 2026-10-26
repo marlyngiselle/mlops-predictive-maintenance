@@ -1,0 +1,44 @@
+# Daily batch scoring with whatever version holds the "champion" alias at run time.
+resources:
+  jobs:
+    pdm_batch_scoring:
+      name: pdm-batch-scoring-${bundle.target}
+      description: Score every unit in service and flag the ones due for maintenance.
+      max_concurrent_runs: 1
+      timeout_seconds: 1800
+      schedule:
+        quartz_cron_expression: "0 30 5 * * ?"
+        timezone_id: UTC
+        pause_status: UNPAUSED
+      email_notifications:
+        on_failure:
+          - ${var.alert_email}
+      tags:
+        workload: predictive-maintenance
+        stage: scoring
+      environments:
+        - environment_key: pdm
+          spec:
+            environment_version: "3"
+            dependencies:
+              - ../../dist/*.whl
+      tasks:
+        - task_key: score
+          environment_key: pdm
+          python_wheel_task:
+            package_name: pdm_rul
+            entry_point: pdm
+            parameters:
+              - --tracking-uri
+              - databricks
+              - --registry-uri
+              - databricks-uc
+              - --model-name
+              - ${var.model_name}
+              - score
+              - --input
+              - ${var.data_root}/current.parquet
+              - --output
+              - ${var.data_root}/predictions/{{job.start_time.iso_date}}.parquet
+              - --threshold
+              - ${var.maintenance_threshold}

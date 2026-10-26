@@ -1,0 +1,30 @@
+# Alternative serving path: Databricks Model Serving, straight from the Unity Catalog alias.
+# Include it in the bundle (pipelines/databricks.yml, include list) to deploy it with the jobs.
+# The endpoint follows the champion version; the release step updates entity_version
+# after a promotion, so traffic never moves without a gate decision behind it.
+resources:
+  model_serving_endpoints:
+    pdm_rul:
+      name: pdm-rul-${bundle.target}
+      config:
+        served_entities:
+          - name: champion
+            entity_name: ${var.catalog}.${var.schema}.rul_model
+            entity_version: "1"
+            workload_size: Small
+            scale_to_zero_enabled: true
+            environment_vars:
+              MAINTENANCE_THRESHOLD_CYCLES: "30"
+        traffic_config:
+          routes:
+            - served_model_name: champion
+              traffic_percentage: 100
+      ai_gateway:
+        inference_table_config:
+          catalog_name: ${var.catalog}
+          schema_name: ${var.schema}
+          table_name_prefix: rul_serving
+          enabled: true
+      tags:
+        - key: workload
+          value: predictive-maintenance

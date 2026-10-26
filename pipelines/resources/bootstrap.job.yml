@@ -1,0 +1,24 @@
+# One-off job that seeds the volume with synthetic fleets, so a fresh workspace can run
+# the whole lifecycle without any real plant data.
+resources:
+  jobs:
+    pdm_bootstrap_synthetic_data:
+      name: pdm-bootstrap-synthetic-data-${bundle.target}
+      description: Write synthetic train, holdout and current fleets to the data volume.
+      max_concurrent_runs: 1
+      tags:
+        workload: predictive-maintenance
+        stage: bootstrap
+      environments:
+        - environment_key: pdm
+          spec:
+            environment_version: "3"
+            dependencies:
+              - ../../dist/*.whl
+      tasks:
+        - task_key: generate
+          environment_key: pdm
+          python_wheel_task:
+            package_name: pdm_rul
+            entry_point: pdm
+            parameters: ["generate", "--output-dir", "${var.data_root}", "--units", "100", "--seed", "42"]

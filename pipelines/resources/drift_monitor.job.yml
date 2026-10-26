@@ -1,0 +1,48 @@
+# Daily data and prediction drift check, after scoring. An alert fails the task on
+# purpose (exit code 2), which pages the alert address through the job notification.
+resources:
+  jobs:
+    pdm_drift_monitor:
+      name: pdm-drift-monitor-${bundle.target}
+      description: PSI and KS per sensor and on predictions, current window against the promotion holdout.
+      max_concurrent_runs: 1
+      timeout_seconds: 1800
+      schedule:
+        quartz_cron_expression: "0 0 7 * * ?"
+        timezone_id: UTC
+        pause_status: UNPAUSED
+      email_notifications:
+        on_failure:
+          - ${var.alert_email}
+      tags:
+        workload: predictive-maintenance
+        stage: monitoring
+      environments:
+        - environment_key: pdm
+          spec:
+            environment_version: "3"
+            dependencies:
+              - ../../dist/*.whl
+      tasks:
+        - task_key: drift_check
+          environment_key: pdm
+          python_wheel_task:
+            package_name: pdm_rul
+            entry_point: pdm
+            parameters:
+              - --tracking-uri
+              - databricks
+              - --registry-uri
+              - databricks-uc
+              - --model-name
+              - ${var.model_name}
+              - drift
+              - --reference
+              - ${var.data_root}/holdout.parquet
+              - --current
+              - ${var.data_root}/current.parquet
+              - --thresholds
+              - ${var.data_root}/config/thresholds.yml
+              - --output
+              - ${var.data_root}/drift/{{job.start_time.iso_date}}.json
+              - --fail-on-alert
