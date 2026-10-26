@@ -1,0 +1,117 @@
+{
+  "status": "alert",
+  "alerts": [
+    "sensor_04: psi=2.835 ks=0.706"
+  ],
+  "reference_rows": 49653,
+  "current_rows": 47013,
+  "thresholds": {
+    "psi_warn": 0.1,
+    "psi_alert": 0.25,
+    "ks_pvalue": 0.01,
+    "ks_stat_alert": 0.2,
+    "prediction_psi_warn": 0.1,
+    "prediction_psi_alert": 0.25,
+    "bins": 10
+  },
+  "prediction": {
+    "name": "prediction",
+    "psi": 0.0052,
+    "ks_stat": 0.0235,
+    "ks_pvalue": 5.622520992577865e-12,
+    "status": "ok"
+  },
+  "features": [
+    {
+      "name": "sensor_01",
+      "psi": 0.0028,
+      "ks_stat": 0.0176,
+      "ks_pvalue": 5.813626911780069e-07,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_02",
+      "psi": 0.0049,
+      "ks_stat": 0.0275,
+      "ks_pvalue": 2.576382376899115e-16,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_03",
+      "psi": 0.0018,
+      "ks_stat": 0.0126,
+      "ks_pvalue": 0.000926433351125108,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_04",
+      "psi": 2.8349,
+      "ks_stat": 0.7055,
+      "ks_pvalue": 0.0,
+      "status": "alert"
+    },
+    {
+      "name": "sensor_05",
+      "psi": 0.004,
+      "ks_stat": 0.0148,
+      "ks_pvalue": 4.827803399948201e-05,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_06",
+      "psi": 0.0036,
+      "ks_stat": 0.0207,
+      "ks_pvalue": 1.9971626658745747e-09,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_07",
+      "psi": 0.0028,
+      "ks_stat": 0.0187,
+      "ks_pvalue": 8.940065977749896e-08,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_08",
+      "psi": 0.0016,
+      "ks_stat": 0.0133,
+      "ks_pvalue": 0.00037092010310140237,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_09",
+      "psi": 0.0088,
+      "ks_stat": 0.0358,
+      "ks_pvalue": 2.3442265171434393e-27,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_10",
+      "psi": 0.0073,
+      "ks_stat": 0.0338,
+      "ks_pvalue": 1.9386782335414095e-24,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_11",
+      "psi": 0.0009,
+      "ks_stat": 0.0102,
+      "ks_pvalue": 0.012512090215498766,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_12",
+      "psi": 0.0029,
+      "ks_stat": 0.023,
+      "ks_pvalue": 1.675380712161145e-11,
+      "status": "ok"
+    },
+    {
+      "name": "sensor_13",
+      "psi": 0.0036,
+      "ks_stat": 0.0246,
+      "ks_pvalue": 4.387148037956305e-13,
+      "status": "ok"
+    }
+  ]
+}

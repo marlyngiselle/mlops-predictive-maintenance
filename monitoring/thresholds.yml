@@ -1,0 +1,17 @@
+# Drift thresholds read by `pdm drift --thresholds monitoring/thresholds.yml`.
+# Changing a value here is a reviewed change like any other (see docs/monitoring-and-retraining.md).
+
+# Population stability index per sensor, on 10 reference quantile bins.
+psi_warn: 0.10
+psi_alert: 0.25
+
+# Kolmogorov Smirnov alerts only when both are true: the p-value is below ks_pvalue
+# and the statistic is at least ks_stat_alert. Large samples make p-values alone useless.
+ks_pvalue: 0.01
+ks_stat_alert: 0.20
+
+# Distribution of predicted remaining life, same PSI method.
+prediction_psi_warn: 0.10
+prediction_psi_alert: 0.25
+
+bins: 10
