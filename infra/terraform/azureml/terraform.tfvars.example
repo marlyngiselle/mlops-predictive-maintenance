@@ -1,0 +1,10 @@
+environment               = "dev"
+location                  = "westeurope"
+name_prefix               = "pdm"
+enable_private_networking = true
+managed_network_isolation = "AllowOnlyApprovedOutbound"
+vnet_address_space        = "10.42.0.0/24"
+
+# Entra ID object IDs. Leave empty to skip the role assignments.
+data_scientists_group_object_id = ""
+release_principal_object_id     = ""
